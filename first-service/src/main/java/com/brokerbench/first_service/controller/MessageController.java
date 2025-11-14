@@ -4,6 +4,7 @@ import com.brokerbench.first_service.dto.Message;
 import com.brokerbench.first_service.factory.BrokerFactory;
 import com.brokerbench.first_service.service.MessageService;
 import com.brokerbench.first_service.service.RabbitMQProducer;
+import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class MessageController {
     }
 
     @PostMapping("/sendMessage")
-    public String sendMessage(@RequestBody Message message) {
+    public String sendMessage(@RequestBody Message message) throws PulsarClientException {
         messageService.sendMessageService(message);
 
         return "Message sent successfully";

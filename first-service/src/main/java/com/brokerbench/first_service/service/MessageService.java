@@ -3,6 +3,7 @@ package com.brokerbench.first_service.service;
 import com.brokerbench.first_service.dto.Message;
 import com.brokerbench.first_service.factory.BrokerFactory;
 import com.brokerbench.first_service.strategy.BrokerTypeStrategy;
+import org.apache.pulsar.client.api.PulsarClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class MessageService {
         this.brokerFactory = brokerFactory;
     }
 
-    public void sendMessageService(Message message) {
+    public void sendMessageService(Message message) throws PulsarClientException {
         logger.info("Finding the Strategy of the recieved Broker");
 
 
