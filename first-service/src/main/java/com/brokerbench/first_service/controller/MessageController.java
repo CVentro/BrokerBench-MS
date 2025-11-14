@@ -1,5 +1,8 @@
 package com.brokerbench.first_service.controller;
 
+import com.brokerbench.first_service.dto.Message;
+import com.brokerbench.first_service.factory.BrokerFactory;
+import com.brokerbench.first_service.service.MessageService;
 import com.brokerbench.first_service.service.RabbitMQProducer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,15 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class MessageController {
 
-    private RabbitMQProducer rabbitMQProducer;
+    private final MessageService messageService;
 
-    public MessageController(RabbitMQProducer rabbitMQProducer) {
-        this.rabbitMQProducer = rabbitMQProducer;
+    MessageController(MessageService messageService) {
+       this.messageService = messageService;
     }
 
-    @GetMapping("/publish")
-    public ResponseEntity<String> sendMessage(@RequestParam("message") String message){
-        rabbitMQProducer.sendMessage(message);
-        return ResponseEntity.ok("Message sent to RabbitMQ");
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestBody Message message) {
+        messageService.sendMessageService(message);
+
+        return "Message sent successfully";
     }
 }
