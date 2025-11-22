@@ -5,6 +5,7 @@ import com.brokerbench.first_service.factory.BrokerFactory;
 import com.brokerbench.first_service.service.MessageService;
 import com.brokerbench.first_service.service.RabbitMQProducer;
 import org.apache.pulsar.client.api.PulsarClientException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,11 @@ public class MessageController {
 
     MessageController(MessageService messageService) {
        this.messageService = messageService;
+    }
+
+    @GetMapping("/sendMessage")
+    public ResponseEntity<String> sendMessage(){
+        return new ResponseEntity<>("SUCCESS" , HttpStatus.OK);
     }
 
     @PostMapping("/sendMessage")
