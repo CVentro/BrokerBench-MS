@@ -12,29 +12,27 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    private final RedisProperties redisProperties;
+
+    public RedisConfig(RedisProperties redisProperties) {
+        this.redisProperties = redisProperties;
+    }
+
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        RedisProperties redisProperties = properties();
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
-        redisStandaloneConfiguration.setPort(redisProperties.getPort());
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+        RedisStandaloneConfiguration config =
+                new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean
-    public RedisTemplate<String,Object> redisTemplate() {
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<String,Object>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-
-    }
-
-    @Bean
-    public RedisProperties properties() {
-        return new  RedisProperties();
+    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+        template.afterPropertiesSet();
+        return template;
     }
 }
