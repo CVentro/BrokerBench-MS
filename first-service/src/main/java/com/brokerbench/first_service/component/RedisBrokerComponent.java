@@ -4,7 +4,6 @@ import com.brokerbench.first_service.dto.Message;
 import com.brokerbench.first_service.enums.BrokerType;
 import com.brokerbench.first_service.service.RedisProducer;
 import com.brokerbench.first_service.strategy.BrokerTypeStrategy;
-import org.apache.pulsar.client.api.PulsarClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
